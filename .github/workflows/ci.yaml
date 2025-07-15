@@ -24,15 +24,15 @@ jobs:
         run: |
           uv venv
           uv sync --active
+          uv sync --group dev --active
 
       - name: Run tests (non-blocking)
         continue-on-error: true
         run: |
           pip install pytest
-          echo $PWD
           cd ..
           echo $PWD
-          pytest tests
+          pytest ./tests
 
       - name: Lint with ruff (non-blocking)
         continue-on-error: true
