@@ -6,15 +6,15 @@ from logging import Logger
 from pathlib import Path
 from typing import Annotated
 
-import httpx
 from loguru import logger as base_logger
 from rich import print
-from typer import Context, Exit, Option, Typer
-
 from settings import AppSettings, gl_settings
+
+import httpx
 from stream_writer_multi.controller import monitor_duration
 from stream_writer_multi.reader import reader_worker
 from stream_writer_multi.writer import writer_worker
+from typer import Context, Exit, Option, Typer
 
 log_format: str = (
     "<green>{time:%Y-%m-%d %H:%M:%S}</green> <level>{level:<8}</level> "
@@ -71,7 +71,7 @@ def run(
 # ======================================================================================================================
 async def main(settings_path: Path) -> None:
     log: Logger = base_logger.bind(task="main")
-    # print(gl_settings)
+    print(gl_settings)
     try:
         settings: AppSettings = AppSettings.from_toml(path=settings_path)
     except Exception as e:
@@ -111,7 +111,7 @@ async def main(settings_path: Path) -> None:
 
         # Start timout monitor
         all_tasks: list[asyncio.Task] = reader_tasks + writer_tasks
-        controller_task: asyncio.Task = asyncio.create_task(
+        asyncio.create_task(
             monitor_duration(tasks=all_tasks, timeout=settings.globals.max_duration_secs), name="monitor"
         )
 
