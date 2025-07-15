@@ -31,6 +31,7 @@ jobs:
           pip install pytest
           echo $PWD
           cd ..
+          echo $PWD
           pytest tests
 
       - name: Lint with ruff (non-blocking)
