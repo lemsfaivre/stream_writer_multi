@@ -6,15 +6,15 @@ from logging import Logger
 from pathlib import Path
 from typing import Annotated
 
+import httpx
 from loguru import logger as base_logger
 from rich import print
-from settings import AppSettings, gl_settings
+from typer import Context, Exit, Option, Typer
 
-import httpx
+from settings import AppSettings, gl_settings
 from stream_writer_multi.controller import monitor_duration
 from stream_writer_multi.reader import reader_worker
 from stream_writer_multi.writer import writer_worker
-from typer import Context, Exit, Option, Typer
 
 log_format: str = (
     "<green>{time:%Y-%m-%d %H:%M:%S}</green> <level>{level:<8}</level> "
