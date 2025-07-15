@@ -1,0 +1,31 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install uv
+        run: pip install uv
+
+      - name: Install dependencies with uv
+        run: uv pip install --system --extra dev
+
+      - name: Run tests (non-blocking)
+        continue-on-error: true
+        run: pytest
+
+      - name: Lint with ruff (non-blocking)
+        continue-on-error: true
+        run: ruff check .
