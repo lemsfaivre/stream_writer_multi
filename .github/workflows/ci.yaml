@@ -20,7 +20,8 @@ jobs:
         run: pip install uv
 
       - name: Install dependencies with uv
-        run: uv venv; uv pip install --system --extra dev
+        # run: uv venv; uv pip install --system --extra dev
+        run: uv venv; uv sync --active
 
       - name: Run tests (non-blocking)
         continue-on-error: true
