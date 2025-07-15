@@ -1,0 +1,35 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Create archive
+        run: |
+          mkdir -p dist
+          tar -czf dist/my_project-${GITHUB_REF_NAME}.tar.gz src/
+
+      - name: Upload to GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: dist/my_project-${GITHUB_REF_NAME}.tar.gz
+
+      - name: Upload to JFrog Artifactory
+        env:
+          JFROG_USER: ${{ secrets.JFROG_USER }}
+          JFROG_PASSWORD: ${{ secrets.JFROG_PASSWORD }}
+        run: |
+          curl -u "$JFROG_USER:$JFROG_PASSWORD" -T dist/my_project-${GITHUB_REF_NAME}.tar.gz \
+            "https://your-org.jfrog.io/artifactory/your-repo/my_project-${GITHUB_REF_NAME}.tar.gz"
