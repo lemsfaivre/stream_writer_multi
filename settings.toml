@@ -1,0 +1,28 @@
+[globals]
+queue_maxsize = 1000
+max_retries = 5
+max_duration_secs = 28800   # 8h = 8 * 3600 = 28800 secs
+
+[sources.i-hostassets]
+url = "https://reqres.in/api/users"
+output_stream = 1
+
+[sources.i-hostasset-t0]
+url = "https://reqres.in/api/users"
+output_stream = 1
+
+[sources.i-assets]
+url = "https://reqres.in/api/users"
+output_stream = 2
+
+[sources.i-asset-t0]
+url = "https://reqres.in/api/users"
+output_stream = 2
+
+[outputs.o-hostassets]
+filename = "hostassets.ndjson"
+stream = 1
+
+[outputs.o-assets]
+filename = "assets.ndjson"
+stream = 2
