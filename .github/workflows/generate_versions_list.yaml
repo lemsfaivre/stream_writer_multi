@@ -1,0 +1,36 @@
+name: Generate Tag List
+
+on:
+  workflow_dispatch:
+
+jobs:
+  fetch-tags:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Fetch latest GitHub tags
+        id: get_tags
+        uses: octokit/request-action@v2.x
+        with:
+          route: GET /repos/${{ github.repository }}/tags
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Generate VERSIONS.md
+        run: |
+          echo "# Available Versions" > VERSIONS.md
+          echo "" >> VERSIONS.md
+          echo "${{ steps.get_tags.outputs.data }}" | jq -r '.[].name' | while read tag; do
+            echo "- $tag" >> VERSIONS.md
+          done
+
+      - name: Commit version list
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git add VERSIONS.md
+          git commit -m "Update VERSIONS.md"
+          git push
