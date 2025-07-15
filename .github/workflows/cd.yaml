@@ -1,0 +1,24 @@
+name: CD
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to deploy (e.g., v0.1.0)'
+        required: true
+        type: string
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download artifact
+        run: |
+          wget https://github.com/your-org/your-repo/releases/download/${{ inputs.version }}/my_project-${{ inputs.version }}.tar.gz
+          tar -xzf my_project-${{ inputs.version }}.tar.gz
+
+      - name: Deploy (example step)
+        run: |
+          echo "Deploying version ${{ inputs.version }}"
+          # Insert your real deployment script here
