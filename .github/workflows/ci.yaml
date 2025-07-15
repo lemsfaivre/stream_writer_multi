@@ -29,7 +29,7 @@ jobs:
         continue-on-error: true
         run: |
           pip install pytest
-          pytest
+          pytest tests
 
       - name: Lint with ruff (non-blocking)
         continue-on-error: true
