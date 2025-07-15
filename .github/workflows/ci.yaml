@@ -7,7 +7,7 @@ on:
     branches: [main]
 
 jobs:
-  test:
+  ci:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -21,7 +21,9 @@ jobs:
 
       - name: Install dependencies with uv
         # run: uv venv; uv pip install --system --extra dev
-        run: uv venv; uv sync --active
+        run: |
+          uv venv
+          uv sync --active
 
       - name: Run tests (non-blocking)
         continue-on-error: true
