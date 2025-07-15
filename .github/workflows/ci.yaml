@@ -29,6 +29,8 @@ jobs:
         continue-on-error: true
         run: |
           pip install pytest
+          echo $PWD
+          cd ..
           pytest tests
 
       - name: Lint with ruff (non-blocking)
